@@ -1,0 +1,38 @@
+[
+    {
+        "id": "S001",
+        "nombre": "Mantenimiento Preventivo",
+        "costo": 3500,
+        "duracion_horas": 8
+    },
+    {
+        "id": "S002",
+        "nombre": "Mantenimiento Correctivo",
+        "costo": 5000,
+        "duracion_horas": 12
+    },
+    {
+        "id": "S003",
+        "nombre": "Inspección de Sistema Contra Incendio",
+        "costo": 2000,
+        "duracion_horas": 4
+    },
+    {
+        "id": "S004",
+        "nombre": "Instalación de Bomba Contra Incendio",
+        "costo": 8000,
+        "duracion_horas": 16
+    },
+    {
+        "id": "S005",
+        "nombre": "Recarga de Extintores",
+        "costo": 250,
+        "duracion_horas": 1
+    },
+    {
+        "id": "S006",
+        "nombre": "Diagnóstico Eléctrico de Tablero",
+        "costo": 1500,
+        "duracion_horas": 2
+    }
+]

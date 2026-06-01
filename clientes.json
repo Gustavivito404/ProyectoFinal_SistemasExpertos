@@ -1,0 +1,37 @@
+[
+    {
+        "id": "C001",
+        "nombre": "Hotel Guadalajara",
+        "tipo": "Empresarial",
+        "cliente_frecuente": true,
+        "ultima_compra_dias": 30
+    },
+    {
+        "id": "C002",
+        "nombre": "Plaza Industrial Jalisco",
+        "tipo": "Empresarial",
+        "cliente_frecuente": true,
+        "ultima_compra_dias": 15
+    },
+    {
+        "id": "C003",
+        "nombre": "Universidad Tecnológica",
+        "tipo": "Institucional",
+        "cliente_frecuente": true,
+        "ultima_compra_dias": 90
+    },
+    {
+        "id": "C004",
+        "nombre": "Taller Mecánico Ramírez",
+        "tipo": "Comercial",
+        "cliente_frecuente": false,
+        "ultima_compra_dias": 400
+    },
+    {
+        "id": "C005",
+        "nombre": "Juan Pérez",
+        "tipo": "Particular",
+        "cliente_frecuente": false,
+        "ultima_compra_dias": 999
+    }
+]
