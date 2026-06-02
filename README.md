@@ -7,3 +7,5 @@ El sistema busca simular el funcionamiento de una plataforma inteligente capaz d
 La propuesta integra conceptos de ingeniería del conocimiento, sistemas expertos, motores de inferencia, bases de datos, agentes inteligentes e inteligencia artificial moderna. El sistema se ejecutará de manera local en computadora personal y contará con una arquitectura modular compuesta por tres agentes principales: un agente de atención al cliente, un agente generador de pedidos o servicios y un agente supervisor encargado de explicar las decisiones tomadas.
 
 Además de automatizar procesos de venta o soporte, el sistema busca ofrecer explicabilidad, mostrando qué reglas fueron activadas y por qué se tomó determinada decisión. Esto permite que el usuario no solo reciba una respuesta automática, sino que también pueda comprender el razonamiento interno del sistema.
+
+Se hara uso de la api de gemini para este trabajo
