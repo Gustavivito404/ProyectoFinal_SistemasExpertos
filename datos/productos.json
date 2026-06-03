@@ -1,6 +1,6 @@
 [
     {
-        "id": "P001",
+        "id_producto": "P001",
         "nombre": "Motor Eléctrico 5 HP",
         "categoria": "Motor",
         "potencia_hp": 5,
@@ -8,7 +8,7 @@
         "stock": 10
     },
     {
-        "id": "P002",
+        "id_producto": "P002",
         "nombre": "Motor Eléctrico 10 HP",
         "categoria": "Motor",
         "potencia_hp": 10,
@@ -16,7 +16,7 @@
         "stock": 6
     },
     {
-        "id": "P003",
+        "id_producto": "P003",
         "nombre": "Bomba Contra Incendio Horizontal",
         "categoria": "Bomba",
         "potencia_hp": 15,
@@ -24,7 +24,7 @@
         "stock": 4
     },
     {
-        "id": "P004",
+        "id_producto": "P004",
         "nombre": "Bomba Jockey",
         "categoria": "Bomba",
         "potencia_hp": 2,
@@ -32,7 +32,7 @@
         "stock": 8
     },
     {
-        "id": "P005",
+        "id_producto": "P005",
         "nombre": "Sensor de Flujo",
         "categoria": "Sensor",
         "potencia_hp": 0,
@@ -40,7 +40,7 @@
         "stock": 25
     },
     {
-        "id": "P006",
+        "id_producto": "P006",
         "nombre": "Sensor de Presión",
         "categoria": "Sensor",
         "potencia_hp": 0,
@@ -48,7 +48,7 @@
         "stock": 18
     },
     {
-        "id": "P007",
+        "id_producto": "P007",
         "nombre": "Extintor PQS 6kg",
         "categoria": "Extintor",
         "potencia_hp": 0,
@@ -56,7 +56,7 @@
         "stock": 50
     },
     {
-        "id": "P008",
+        "id_producto": "P008",
         "nombre": "Extintor CO2 10lb",
         "categoria": "Extintor",
         "potencia_hp": 0,

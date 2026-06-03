@@ -1,0 +1,30 @@
+[
+    {
+        "id_servicio": "S001",
+        "nombre": "Mantenimiento Preventivo",
+        "costo": 3500,
+        "duracion_horas": 8,
+        "descripcion": "Revisión general, limpieza, lubricación y pruebas básicas del equipo contra incendio."
+    },
+    {
+        "id_servicio": "S002",
+        "nombre": "Mantenimiento Correctivo",
+        "costo": 5000,
+        "duracion_horas": 12,
+        "descripcion": "Diagnóstico y reparación de fallas en bombas, motores o tableros eléctricos."
+    },
+    {
+        "id_servicio": "S003",
+        "nombre": "Inspección de Sistema Contra Incendio",
+        "costo": 2000,
+        "duracion_horas": 4,
+        "descripcion": "Evaluación visual y funcional del sistema contra incendio instalado."
+    },
+    {
+        "id_servicio": "S004",
+        "nombre": "Instalación de Bomba Contra Incendio",
+        "costo": 8000,
+        "duracion_horas": 16,
+        "descripcion": "Instalación física y conexión básica de bomba contra incendio."
+    }
+]
