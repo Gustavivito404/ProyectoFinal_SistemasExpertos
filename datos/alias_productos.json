@@ -1,0 +1,185 @@
+[
+    {
+        "id_producto": "P001",
+        "nombre_producto": "Motor Eléctrico 5 HP",
+        "alias": [
+            "motor electrico 5 hp",
+            "motor de 5 hp",
+            "motor 5hp",
+            "motor electrico chico",
+            "motor para bomba de 5 hp"
+        ]
+    },
+    {
+        "id_producto": "P002",
+        "nombre_producto": "Motor Eléctrico 10 HP",
+        "alias": [
+            "motor electrico 10 hp",
+            "motor de 10 hp",
+            "motor 10hp",
+            "motor electrico mediano",
+            "motor para bomba de 10 hp"
+        ]
+    },
+    {
+        "id_producto": "P003",
+        "nombre_producto": "Motor de Combustible 10 HP",
+        "alias": [
+            "motor de combustible 10 hp",
+            "motor combustion 10 hp",
+            "motor a gasolina 10 hp",
+            "motor de gasolina 10 hp",
+            "motor de respaldo 10 hp"
+        ]
+    },
+    {
+        "id_producto": "P004",
+        "nombre_producto": "Motor de Combustible 20 HP",
+        "alias": [
+            "motor de combustible 20 hp",
+            "motor combustion 20 hp",
+            "motor a gasolina 20 hp",
+            "motor de gasolina 20 hp",
+            "motor de respaldo 20 hp"
+        ]
+    },
+    {
+        "id_producto": "P005",
+        "nombre_producto": "Bomba para Motor Eléctrico 5 HP",
+        "alias": [
+            "bomba para motor electrico 5 hp",
+            "bomba electrica 5 hp",
+            "bomba de 5 hp",
+            "bomba para motor 5hp",
+            "bomba contra incendio 5 hp"
+        ]
+    },
+    {
+        "id_producto": "P006",
+        "nombre_producto": "Bomba para Motor Eléctrico 10 HP",
+        "alias": [
+            "bomba para motor electrico 10 hp",
+            "bomba electrica 10 hp",
+            "bomba de 10 hp",
+            "bomba para motor 10hp",
+            "bomba contra incendio 10 hp"
+        ]
+    },
+    {
+        "id_producto": "P007",
+        "nombre_producto": "Bomba para Motor de Combustible 10 HP",
+        "alias": [
+            "bomba para motor de combustible 10 hp",
+            "bomba combustion 10 hp",
+            "bomba para motor gasolina 10 hp",
+            "bomba de respaldo 10 hp",
+            "bomba contra incendio combustion 10 hp"
+        ]
+    },
+    {
+        "id_producto": "P008",
+        "nombre_producto": "Bomba para Motor de Combustible 20 HP",
+        "alias": [
+            "bomba para motor de combustible 20 hp",
+            "bomba combustion 20 hp",
+            "bomba para motor gasolina 20 hp",
+            "bomba de respaldo 20 hp",
+            "bomba contra incendio combustion 20 hp"
+        ]
+    },
+    {
+        "id_producto": "P009",
+        "nombre_producto": "Bomba Eléctrica Jockey 10 HP",
+        "alias": [
+            "bomba jockey",
+            "bomba jokie",
+            "bomba piloto",
+            "bomba electrica jockey",
+            "bomba jockey 10 hp",
+            "bomba piloto 10 hp"
+        ]
+    },
+    {
+        "id_producto": "P010",
+        "nombre_producto": "Bomba Eléctrica Horizontal 15 HP",
+        "alias": [
+            "bomba horizontal",
+            "bomba electrica horizontal",
+            "bomba horizontal 15 hp",
+            "bomba electrica 15 hp",
+            "bomba contra incendio horizontal"
+        ]
+    },
+    {
+        "id_producto": "P011",
+        "nombre_producto": "Sensor de Flujo",
+        "alias": [
+            "sensor de flujo",
+            "detector de flujo",
+            "flow switch",
+            "interruptor de flujo",
+            "sensor flujo agua"
+        ]
+    },
+    {
+        "id_producto": "P012",
+        "nombre_producto": "Sensor de Presión",
+        "alias": [
+            "sensor de presion",
+            "sensor de presión",
+            "presostato",
+            "switch de presion",
+            "interruptor de presion",
+            "sensor de presion de agua"
+        ]
+    },
+    {
+        "id_producto": "P013",
+        "nombre_producto": "Manómetro de Presión",
+        "alias": [
+            "manometro",
+            "manómetro",
+            "manometro de presion",
+            "medidor de presion",
+            "indicador de presion",
+            "reloj de presion"
+        ]
+    },
+    {
+        "id_producto": "P014",
+        "nombre_producto": "Válvula Check",
+        "alias": [
+            "valvula check",
+            "válvula check",
+            "valvula de retencion",
+            "válvula de retención",
+            "check",
+            "valvula antirretorno"
+        ]
+    },
+    {
+        "id_producto": "P015",
+        "nombre_producto": "Válvula de Alivio",
+        "alias": [
+            "valvula de alivio",
+            "válvula de alivio",
+            "valvula de sobrepresion",
+            "valvula de seguridad",
+            "alivio de presion",
+            "valvula para sobrepresion"
+        ]
+    },
+    {
+        "id_producto": "P016",
+        "nombre_producto": "Tablero de Control para Sistema Contra Incendio",
+        "alias": [
+            "tablero de control",
+            "tablero contra incendio",
+            "panel de control",
+            "controlador",
+            "tablero electrico",
+            "tablero de bombas",
+            "panel contra incendio"
+        ]
+    }
+]

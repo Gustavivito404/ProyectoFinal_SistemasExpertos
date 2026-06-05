@@ -3,28 +3,72 @@
         "id_cliente": "C001",
         "nombre": "Hotel Guadalajara",
         "tipo": "Empresarial",
-        "cliente_frecuente": true,
-        "ultima_compra_dias": 30
+        "num_operaciones": 8,
+        "cliente_frecuente": false,
+        "fecha_ultimo_servicio": "2025-11-15",
+        "equipo_instalado": {
+            "bomba_electrica": true,
+            "bomba_piloto": true,
+            "bomba_combustion": true,
+            "tablero_control_propio": false
+        },
+        "facturacion": {
+            "rfc": "HGU250101AB1",
+            "direccion": "Av. López Mateos 1200, Guadalajara, Jalisco"
+        }
     },
     {
         "id_cliente": "C002",
         "nombre": "Plaza Industrial Jalisco",
         "tipo": "Empresarial",
+        "num_operaciones": 12,
         "cliente_frecuente": true,
-        "ultima_compra_dias": 15
+        "fecha_ultimo_servicio": "2026-01-20",
+        "equipo_instalado": {
+            "bomba_electrica": true,
+            "bomba_piloto": true,
+            "bomba_combustion": true,
+            "tablero_control_propio": true
+        },
+        "facturacion": {
+            "rfc": "PIJ240315K92",
+            "direccion": "Carretera a Chapala 4500, Tlaquepaque, Jalisco"
+        }
     },
     {
         "id_cliente": "C003",
         "nombre": "Universidad Tecnológica",
         "tipo": "Institucional",
+        "num_operaciones": 10,
         "cliente_frecuente": true,
-        "ultima_compra_dias": 90
+        "fecha_ultimo_servicio": "2025-08-10",
+        "equipo_instalado": {
+            "bomba_electrica": true,
+            "bomba_piloto": true,
+            "bomba_combustion": false,
+            "tablero_control_propio": true
+        },
+        "facturacion": {
+            "rfc": "UTE230801M45",
+            "direccion": "Av. Universidad 300, Zapopan, Jalisco"
+        }
     },
     {
         "id_cliente": "C004",
         "nombre": "Taller Mecánico Ramírez",
         "tipo": "Comercial",
+        "num_operaciones": 2,
         "cliente_frecuente": false,
-        "ultima_compra_dias": 400
+        "fecha_ultimo_servicio": "2025-03-05",
+        "equipo_instalado": {
+            "bomba_electrica": true,
+            "bomba_piloto": false,
+            "bomba_combustion": false,
+            "tablero_control_propio": false
+        },
+        "facturacion": {
+            "rfc": "TMR220610Q71",
+            "direccion": "Calle Industria 125, Guadalajara, Jalisco"
+        }
     }
 ]

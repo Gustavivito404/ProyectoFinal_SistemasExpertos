@@ -2,29 +2,79 @@
     {
         "id_servicio": "S001",
         "nombre": "Mantenimiento Preventivo",
-        "costo": 3500,
-        "duracion_horas": 8,
-        "descripcion": "Revisión general, limpieza, lubricación y pruebas básicas del equipo contra incendio."
+        "tipo_servicio": "Preventivo",
+        "costo_base": 3500,
+        "duracion_dias_base": 1,
+        "nivel_validacion": "Operativa",
+        "considera_ultimo_servicio": true,
+        "requiere_revision_previa": false,
+        "observaciones_base": [
+            "Revisar estado general del sistema contra incendio.",
+            "Verificar funcionamiento de bomba electrica, bomba piloto y bomba de combustion si el cliente cuenta con ellas.",
+            "Si el cliente cuenta con bomba de combustion, considerar revision de aceite, filtro de aire, filtro de aceite y filtro de combustible.",
+            "Si el tablero de control no es propio de la empresa, notificar al operador para decidir si se incluye en el alcance del mantenimiento.",
+            "Si el cliente es comercial, recomendar proteccion de mercancia, uso de lonas o aislamiento del area de trabajo.",
+            "Si han pasado mas de 6 meses desde el ultimo servicio, recomendar mantenimiento preventivo."
+        ]
     },
     {
         "id_servicio": "S002",
         "nombre": "Mantenimiento Correctivo",
-        "costo": 5000,
-        "duracion_horas": 12,
-        "descripcion": "Diagnóstico y reparación de fallas en bombas, motores o tableros eléctricos."
+        "tipo_servicio": "Correctivo",
+        "costo_base": 5000,
+        "duracion_dias_base": 2,
+        "nivel_validacion": "Tecnica",
+        "considera_ultimo_servicio": true,
+        "requiere_revision_previa": true,
+        "observaciones_base": [
+            "Solicitar descripcion de la falla reportada por el cliente.",
+            "Realizar revision tecnica previa antes de confirmar el alcance del mantenimiento correctivo.",
+            "Identificar si la falla corresponde a bomba, motor, sensor, valvula, tablero de control o tuberia.",
+            "Si el producto o equipo afectado es critico, asignar prioridad alta.",
+            "Si el defecto requiere modificacion del sistema, aplicar validacion tecnica considerando criterios y normativas de sistemas contra incendio.",
+            "Si el tablero de control no es propio de la empresa, advertir que puede requerir diagnostico especial o quedar fuera del alcance estandar.",
+            "Si el cliente es comercial, recomendar proteccion del area para evitar afectaciones a mercancia o zonas de paso.",
+            "El costo y la duracion final pueden cambiar dependiendo del diagnostico, refacciones, complejidad de la reparacion y condiciones del sitio."
+        ]
     },
     {
         "id_servicio": "S003",
-        "nombre": "Inspección de Sistema Contra Incendio",
-        "costo": 2000,
-        "duracion_horas": 4,
-        "descripcion": "Evaluación visual y funcional del sistema contra incendio instalado."
+        "nombre": "Inspeccion Sencilla de Sistema Contra Incendio",
+        "tipo_servicio": "Inspeccion",
+        "costo_base": 2000,
+        "duracion_dias_base": 1,
+        "nivel_validacion": "Operativa",
+        "considera_ultimo_servicio": true,
+        "requiere_revision_previa": false,
+        "observaciones_base": [
+            "Realizar revision visual y funcional general del sistema contra incendio.",
+            "Verificar presencia y estado basico de bombas, sensores, valvulas, manometros y tablero de control.",
+            "Registrar observaciones detectadas durante la inspeccion.",
+            "Si se detecta equipo critico con posible falla, sugerir mantenimiento correctivo.",
+            "Si han pasado mas de 6 meses desde el ultimo servicio, sugerir mantenimiento preventivo.",
+            "Si el cliente es institucional, recomendar coordinacion con responsables del edificio y horarios de baja afluencia."
+        ]
     },
     {
         "id_servicio": "S004",
-        "nombre": "Instalación de Bomba Contra Incendio",
-        "costo": 8000,
-        "duracion_horas": 16,
-        "descripcion": "Instalación física y conexión básica de bomba contra incendio."
+        "nombre": "Instalacion de Sistema Contra Incendio",
+        "tipo_servicio": "Instalacion",
+        "costo_base": 8000,
+        "duracion_dias_base": 3,
+        "nivel_validacion": "Tecnica",
+        "considera_ultimo_servicio": false,
+        "requiere_revision_previa": true,
+        "observaciones_base": [
+            "La instalacion requiere revision tecnica previa antes de confirmar costo, duracion y alcance.",
+            "Solicitar informacion del sitio, planos disponibles, distribucion de areas y necesidades del cliente.",
+            "Considerar calculos hidraulicos, seleccion de tuberias, ubicacion de equipos y normativa aplicable.",
+            "Verificar si se instalaran bombas, motores, sensores, valvulas, manometros y tablero de control.",
+            "Si se requiere tablero de control, enviar a revision de diseno tecnico.",
+            "El costo base es solo una referencia inicial y debe ser ajustado por el ingeniero u operador responsable.",
+            "La duracion base puede variar dependiendo del tamaño, complejidad y condiciones de la instalacion.",
+            "Si el cliente es comercial, considerar proteccion de mercancia, horarios de trabajo y aislamiento de zonas de paso.",
+            "Si el cliente es empresarial o institucional, coordinar acceso a zonas tecnicas, responsables internos y horarios permitidos.",
+            "Si el servicio es foraneo, el Agente Supervisor debe advertir sobre posibles viaticos, traslado de personal y movilidad de material pesado."
+        ]
     }
 ]

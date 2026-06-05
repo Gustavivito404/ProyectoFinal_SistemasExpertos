@@ -1,0 +1,528 @@
+[
+    {
+        "id_regla": "R001",
+        "nombre": "Clasificar cliente frecuente",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "cliente.num_operaciones >= 10"
+        ],
+        "acciones": [
+            "Establecer cliente_frecuente = true",
+            "Permitir que el sistema sugiera beneficios comerciales o prioridad de atención"
+        ],
+        "explicacion": "El cliente se considera frecuente cuando acumula al menos 10 operaciones entre compras y servicios."
+    },
+    {
+        "id_regla": "R002",
+        "nombre": "Clasificar cliente no frecuente",
+        "categoria": "Cliente",
+        "prioridad": "Baja",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "cliente.num_operaciones < 10"
+        ],
+        "acciones": [
+            "Establecer cliente_frecuente = false"
+        ],
+        "explicacion": "El cliente no alcanza el mínimo de operaciones definido para considerarse frecuente."
+    },
+    {
+        "id_regla": "R003",
+        "nombre": "Recomendar mantenimiento por tiempo transcurrido",
+        "categoria": "Cliente",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "servicio.considera_ultimo_servicio = true",
+            "meses_desde(cliente.fecha_ultimo_servicio) > 6"
+        ],
+        "acciones": [
+            "Agregar recomendación de mantenimiento preventivo",
+            "Informar al Agente 3 para incluirlo en el resumen"
+        ],
+        "explicacion": "Si han pasado más de 6 meses desde el último servicio, se recomienda mantenimiento preventivo."
+    },
+    {
+        "id_regla": "R004",
+        "nombre": "Advertir tablero de control externo",
+        "categoria": "Cliente",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.equipo_instalado.tablero_control_propio = false"
+        ],
+        "acciones": [
+            "Agregar advertencia de tablero externo al resumen",
+            "Solicitar decisión del operador sobre si se incluye mantenimiento del tablero"
+        ],
+        "explicacion": "El tablero existe, pero no pertenece a una arquitectura propia de la empresa; el operador debe decidir el alcance del servicio."
+    },
+    {
+        "id_regla": "R005",
+        "nombre": "Recomendación para cliente comercial",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.tipo = 'Comercial'"
+        ],
+        "acciones": [
+            "Recomendar protección de mercancía",
+            "Sugerir lonas, aislamiento del área o control de zonas de paso"
+        ],
+        "explicacion": "En clientes comerciales puede existir riesgo de afectar mercancía, pasillos o áreas de venta durante el servicio."
+    },
+    {
+        "id_regla": "R006",
+        "nombre": "Recomendación para cliente empresarial",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.tipo = 'Empresarial'"
+        ],
+        "acciones": [
+            "Recomendar coordinación con área técnica o mantenimiento interno",
+            "Sugerir acceso a zonas técnicas"
+        ],
+        "explicacion": "Los clientes empresariales suelen contar con áreas específicas de mantenimiento o zonas técnicas."
+    },
+    {
+        "id_regla": "R007",
+        "nombre": "Recomendación para cliente institucional",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.tipo = 'Institucional'"
+        ],
+        "acciones": [
+            "Recomendar coordinación con responsables del edificio",
+            "Sugerir horarios de baja afluencia y control de acceso"
+        ],
+        "explicacion": "En clientes institucionales se debe cuidar la seguridad, el acceso y la coordinación con responsables internos."
+    },
+    {
+        "id_regla": "R008",
+        "nombre": "Revisión de sistema con motor de combustión instalado",
+        "categoria": "Cliente",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.equipo_instalado.bomba_combustion = true"
+        ],
+        "acciones": [
+            "Recomendar revisión del motor de combustión asociado al sistema",
+            "Agregar revisión de aceite, filtro de aire, filtro de aceite, filtro de combustible, arranque y sistema de combustible"
+        ],
+        "explicacion": "Cuando el cliente cuenta con equipo de combustión, la revisión debe enfocarse en el motor de combustión y sus consumibles, no duplicar la revisión hidráulica de la bomba."
+    },
+    {
+        "id_regla": "R009",
+        "nombre": "Revisión de bomba piloto instalada",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.equipo_instalado.bomba_piloto = true"
+        ],
+        "acciones": [
+            "Recomendar revisión de presión constante",
+            "Verificar arranque automático, paro automático y funcionamiento de bomba jockey o piloto"
+        ],
+        "explicacion": "La bomba piloto mantiene la presión del sistema, por lo que debe revisarse su operación automática."
+    },
+    {
+        "id_regla": "R010",
+        "nombre": "Revisión de sistema con motor eléctrico instalado",
+        "categoria": "Cliente",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.equipo_instalado.bomba_electrica = true"
+        ],
+        "acciones": [
+            "Recomendar revisión del motor eléctrico asociado al sistema",
+            "Verificar alimentación eléctrica, conexiones, protecciones, arranque y operación general"
+        ],
+        "explicacion": "Cuando el cliente cuenta con equipo eléctrico, la revisión debe enfocarse en el motor eléctrico y su sistema de alimentación."
+    },
+    {
+        "id_regla": "R011",
+        "nombre": "Validar stock suficiente",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.control_stock = true",
+            "producto.stock >= cantidad_solicitada"
+        ],
+        "acciones": [
+            "Permitir generación de pedido",
+            "Calcular subtotal del producto"
+        ],
+        "explicacion": "Si existe inventario suficiente, el producto puede agregarse al pedido."
+    },
+    {
+        "id_regla": "R012",
+        "nombre": "Detectar stock insuficiente",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.control_stock = true",
+            "producto.stock < cantidad_solicitada"
+        ],
+        "acciones": [
+            "Bloquear confirmación directa del pedido",
+            "Sugerir reabastecimiento o validación del operador"
+        ],
+        "explicacion": "Si no hay unidades suficientes, el sistema no debe confirmar el pedido automáticamente."
+    },
+    {
+        "id_regla": "R013",
+        "nombre": "Alertar stock mínimo",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.control_stock = true",
+            "producto.stock <= producto.stock_minimo"
+        ],
+        "acciones": [
+            "Generar alerta de reabastecimiento",
+            "Informar al Agente 3 para mostrar advertencia"
+        ],
+        "explicacion": "El producto se encuentra en el mínimo recomendado de inventario o por debajo de él."
+    },
+    {
+        "id_regla": "R014",
+        "nombre": "Sugerir instalación de producto instalable",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.instalable = true",
+            "intencion IN ['compra', 'cotizacion']"
+        ],
+        "acciones": [
+            "Sugerir servicio de instalación relacionado"
+        ],
+        "explicacion": "Si el producto puede instalarse, el sistema puede recomendar agregar un servicio de instalación."
+    },
+    {
+        "id_regla": "R015",
+        "nombre": "Asignar prioridad por equipo crítico",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.equipo_critico = true"
+        ],
+        "acciones": [
+            "Asignar prioridad alta a la solicitud",
+            "Agregar advertencia técnica al resumen"
+        ],
+        "explicacion": "Los equipos críticos afectan directamente el funcionamiento del sistema contra incendio."
+    },
+    {
+        "id_regla": "R016",
+        "nombre": "Validar producto con precio variable",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.precio_variable = true"
+        ],
+        "acciones": [
+            "Advertir que el precio base es referencial",
+            "Solicitar validación del operador antes de confirmar precio final"
+        ],
+        "explicacion": "Algunos productos, como tableros de control, pueden variar de precio según el sistema del cliente."
+    },
+    {
+        "id_regla": "R017",
+        "nombre": "Enviar a revisión por diseño técnico",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.requiere_diseno_tecnico = true"
+        ],
+        "acciones": [
+            "Solicitar revisión técnica previa",
+            "Advertir que no debe cerrarse la venta o instalación sin validación"
+        ],
+        "explicacion": "Los productos con diseño técnico requieren análisis de características, arquitectura y compatibilidad."
+    },
+    {
+        "id_regla": "R018",
+        "nombre": "No descontar stock de producto sin control de inventario",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.control_stock = false"
+        ],
+        "acciones": [
+            "No descontar inventario automáticamente",
+            "Enviar el producto a validación de operador"
+        ],
+        "explicacion": "Algunos productos personalizados o dependientes del sistema no se manejan como inventario físico estándar."
+    },
+    {
+        "id_regla": "R019",
+        "nombre": "Recomendación para motor de combustión",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.categoria = 'Motor'",
+            "producto.subcategoria = 'Combustion'"
+        ],
+        "acciones": [
+            "Recomendar revisión de aceite, filtros, combustible, arranque y estado mecánico"
+        ],
+        "explicacion": "Los motores de combustión requieren revisión mecánica y consumibles específicos."
+    },
+    {
+        "id_regla": "R020",
+        "nombre": "Recomendación para motor eléctrico",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.categoria = 'Motor'",
+            "producto.subcategoria = 'Electrico'"
+        ],
+        "acciones": [
+            "Recomendar revisión de alimentación, conexiones, protecciones, arranque y operación"
+        ],
+        "explicacion": "Los motores eléctricos requieren revisión de alimentación eléctrica y sistema de arranque."
+    },
+    {
+        "id_regla": "R021",
+        "nombre": "Recomendación hidráulica para bombas",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.categoria = 'Bomba'"
+        ],
+        "acciones": [
+            "Recomendar revisión de presión, acoplamiento, goteos, fugas, sellos mecánicos, succión, descarga y estado hidráulico general"
+        ],
+        "explicacion": "La revisión de bombas debe enfocarse en la parte hidráulica, evitando duplicar las revisiones propias del motor."
+    },
+    {
+        "id_regla": "R022",
+        "nombre": "Recomendación para sensores",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.categoria = 'Sensor'"
+        ],
+        "acciones": [
+            "Recomendar prueba funcional, señal y comunicación con tablero de control"
+        ],
+        "explicacion": "Los sensores deben comprobarse para asegurar que detecten correctamente condiciones del sistema."
+    },
+    {
+        "id_regla": "R023",
+        "nombre": "Recomendación para válvulas",
+        "categoria": "Producto",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "producto.categoria = 'Valvula'"
+        ],
+        "acciones": [
+            "Recomendar revisión de apertura, cierre, fugas, retorno y presión"
+        ],
+        "explicacion": "Las válvulas deben revisarse para asegurar funcionamiento hidráulico correcto y evitar fallas de presión o retorno."
+    },
+    {
+        "id_regla": "R024",
+        "nombre": "Servicio con validación técnica",
+        "categoria": "Servicio",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "servicio.nivel_validacion = 'Tecnica'"
+        ],
+        "acciones": [
+            "Advertir que el servicio requiere validación técnica",
+            "Solicitar revisión de operador o ingeniero antes de confirmar"
+        ],
+        "explicacion": "Los servicios técnicos pueden requerir criterios de ingeniería, diagnóstico o revisión normativa."
+    },
+    {
+        "id_regla": "R025",
+        "nombre": "Servicio con revisión previa",
+        "categoria": "Servicio",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "servicio.requiere_revision_previa = true"
+        ],
+        "acciones": [
+            "Bloquear confirmación final automática",
+            "Solicitar diagnóstico o revisión previa antes de confirmar alcance, costo y duración"
+        ],
+        "explicacion": "Algunos servicios no pueden ejecutarse sin revisar primero las condiciones reales del sistema o la falla."
+    },
+    {
+        "id_regla": "R026",
+        "nombre": "Correctivo requiere diagnóstico",
+        "categoria": "Servicio",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "servicio.tipo_servicio = 'Correctivo'"
+        ],
+        "acciones": [
+            "Solicitar descripción de la falla",
+            "Requerir diagnóstico antes de confirmar reparación"
+        ],
+        "explicacion": "No se puede corregir una falla sin conocer su causa, alcance y posibles riesgos."
+    },
+    {
+        "id_regla": "R027",
+        "nombre": "Instalación requiere información técnica del sitio",
+        "categoria": "Servicio",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "servicio.tipo_servicio = 'Instalacion'"
+        ],
+        "acciones": [
+            "Solicitar información del sitio, planos disponibles, distribución de áreas y necesidades del cliente",
+            "Enviar a validación técnica"
+        ],
+        "explicacion": "Una instalación requiere analizar condiciones del sitio, planos, tuberías, cálculos y alcance técnico."
+    },
+    {
+        "id_regla": "R028",
+        "nombre": "Inspección puede derivar en correctivo",
+        "categoria": "Servicio",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "servicio.tipo_servicio = 'Inspeccion'",
+            "falla_critica_detectada = true"
+        ],
+        "acciones": [
+            "Sugerir mantenimiento correctivo",
+            "Agregar advertencia al resumen del Agente 3"
+        ],
+        "explicacion": "Si una inspección encuentra fallas críticas, puede convertirse en una solicitud de mantenimiento correctivo."
+    },
+    {
+        "id_regla": "R029",
+        "nombre": "Servicio foráneo con advertencia de viáticos",
+        "categoria": "Operacion",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "solicitud.servicio_foraneo = true"
+        ],
+        "acciones": [
+            "Advertir sobre posibles viáticos, traslado de personal y movilidad de material pesado",
+            "Solicitar validación de costo final"
+        ],
+        "explicacion": "Los servicios fuera de zona local pueden modificar el costo por traslado y logística."
+    },
+    {
+        "id_regla": "R030",
+        "nombre": "Costo y duración son estimaciones base",
+        "categoria": "Operacion",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "solicitud.tipo = 'servicio'"
+        ],
+        "acciones": [
+            "Mostrar costo_base y duracion_dias_base como estimaciones",
+            "Advertir que el operador puede ajustar costo y duración"
+        ],
+        "explicacion": "Los servicios pueden variar por diagnóstico, materiales, ubicación, complejidad y condiciones del sitio."
+    },
+    {
+        "id_regla": "R031",
+        "nombre": "Solicitud incompleta",
+        "categoria": "Operacion",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "datos_obligatorios_faltantes = true"
+        ],
+        "acciones": [
+            "Solicitar información faltante antes de generar pedido o servicio"
+        ],
+        "explicacion": "El sistema necesita datos mínimos para generar una operación confiable."
+    },
+    {
+        "id_regla": "R032",
+        "nombre": "Cliente registrado con datos de facturación",
+        "categoria": "Cliente",
+        "prioridad": "Media",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "cliente.facturacion.rfc IS NOT NULL",
+            "cliente.facturacion.direccion IS NOT NULL"
+        ],
+        "acciones": [
+            "Usar datos registrados para agilizar pedido, cotización o servicio"
+        ],
+        "explicacion": "Si el cliente ya está registrado, no es necesario solicitar nuevamente RFC y dirección."
+    },
+    {
+        "id_regla": "R033",
+        "nombre": "Registro de nuevo cliente",
+        "categoria": "Cliente",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "cliente_no_registrado = true",
+            "desea_registro = true"
+        ],
+        "acciones": [
+            "Solicitar nombre, tipo de cliente, RFC, dirección y equipo instalado",
+            "Crear cliente pendiente de validación",
+            "Guardar cliente en JSON y base de datos"
+        ],
+        "explicacion": "Cuando un cliente no registrado desea darse de alta, el sistema debe solicitar datos mínimos y preparar su registro."
+    },
+    {
+        "id_regla": "R034",
+        "nombre": "Producto con mantenimiento y cliente vencido",
+        "categoria": "Producto",
+        "prioridad": "Alta",
+        "agente_responsable": "Agente 2 - Motor de Inferencia",
+        "condiciones": [
+            "producto.requiere_mantenimiento = true",
+            "meses_desde(cliente.fecha_ultimo_servicio) > 6"
+        ],
+        "acciones": [
+            "Recomendar revisión o mantenimiento preventivo relacionado con el producto"
+        ],
+        "explicacion": "Si el producto requiere mantenimiento y el cliente tiene más de 6 meses sin servicio, se recomienda revisión preventiva."
+    },
+    {
+        "id_regla": "R035",
+        "nombre": "Aplicar beneficio por cliente frecuente",
+        "categoria": "Cliente",
+        "prioridad": "Baja",
+        "agente_responsable": "Agente 3 - Supervisor / Explicador",
+        "condiciones": [
+            "cliente.cliente_frecuente = true"
+        ],
+        "acciones": [
+            "Sugerir descuento, prioridad o beneficio comercial sujeto a validación del operador"
+        ],
+        "explicacion": "Los clientes frecuentes pueden recibir beneficios, pero la decisión final queda a criterio del operador."
+    }
+]
