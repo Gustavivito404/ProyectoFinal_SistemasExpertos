@@ -61,6 +61,9 @@ class MotorInferencia:
             "estado": "pendiente_revision"
         }
 
+        # Aunque falten datos, evaluamos lo que sí se detectó para mostrar
+        # costos base, duración estimada y advertencias técnicas.
+        # La operación quedará marcada como incompleta, pero no oculta la estimación.
         if datos_faltantes:
             self._activar_regla(
                 resultado=resultado,
@@ -69,8 +72,6 @@ class MotorInferencia:
                 accion_realizada="Solicitar información faltante antes de generar operación"
             )
             resultado["requiere_validacion"] = True
-            resultado["estado"] = "incompleto"
-            return resultado
 
         if cliente:
             self._evaluar_cliente(resultado, cliente, servicio, productos)
@@ -95,7 +96,9 @@ class MotorInferencia:
 
         self._calcular_totales(resultado)
 
-        if resultado["requiere_validacion"]:
+        if datos_faltantes:
+            resultado["estado"] = "incompleto"
+        elif resultado["requiere_validacion"]:
             resultado["estado"] = "pendiente_validacion"
         else:
             resultado["estado"] = "preaprobado"

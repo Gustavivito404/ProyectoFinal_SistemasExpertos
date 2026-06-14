@@ -1,3 +1,4 @@
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -6,21 +7,8 @@ import db
 
 # ============================================================
 # agente_cliente.py
-# Agente 1 - Atención al Cliente
-#
-# Función:
-#   - Leer el mensaje del cliente.
-#   - Detectar intención.
-#   - Detectar cliente registrado.
-#   - Detectar productos usando alias_productos.
-#   - Detectar servicios.
-#   - Detectar cantidades aproximadas.
-#   - Marcar datos faltantes.
-#
-# Este agente NO calcula costos finales ni aplica reglas profundas.
-# Eso le corresponde al Agente 2 / Motor de Inferencia.
+# Agente 1 - Enfoque Chatbot Conversacional
 # ============================================================
-
 
 class AgenteAtencionCliente:
     def analizar_mensaje(self, mensaje: str) -> Dict[str, Any]:
@@ -35,14 +23,19 @@ class AgenteAtencionCliente:
                 "servicio_detectado": None,
                 "servicio_foraneo": False,
                 "datos_faltantes": ["mensaje"],
-                "respuesta_sugerida": "Por favor escribe una solicitud para poder analizarla."
+                "respuesta_sugerida": "¡Hola! Soy tu asistente de FireGuard. ¿En qué puedo ayudarte hoy con tu sistema contra incendios?"
             }
 
-        intencion = self._detectar_intencion(mensaje)
+        # 1. Buscar entidades primero para no depender de palabras clave ambiguas
         cliente = db.buscar_cliente_en_texto(mensaje)
         productos = self._detectar_productos(mensaje)
         servicio = db.buscar_servicio_en_texto(mensaje)
         servicio_foraneo = self._detectar_servicio_foraneo(mensaje)
+        
+        # 2. Determinar intención de forma inteligente
+        intencion = self._determinar_intencion_inteligente(mensaje, productos, servicio)
+        
+        # 3. Detectar qué información falta según el contexto real
         datos_faltantes = self._detectar_datos_faltantes(
             intencion=intencion,
             cliente=cliente,
@@ -51,7 +44,8 @@ class AgenteAtencionCliente:
             mensaje=mensaje
         )
 
-        respuesta_sugerida = self._generar_respuesta_sugerida(
+        # 4. Respuesta en formato Chatbot Conversacional
+        respuesta_sugerida = self._generar_respuesta_chatbot(
             intencion=intencion,
             cliente=cliente,
             productos=productos,
@@ -70,95 +64,33 @@ class AgenteAtencionCliente:
             "respuesta_sugerida": respuesta_sugerida
         }
 
-    # --------------------------------------------------------
-    # DETECCIÓN DE INTENCIÓN
-    # --------------------------------------------------------
-
-    def _detectar_intencion(self, mensaje: str) -> str:
+    def _determinar_intencion_inteligente(self, mensaje: str, productos: list, servicio: Optional[dict]) -> str:
         texto = db.texto_normalizado(mensaje)
-
-        palabras_registro = [
-            "registrarme",
-            "registrar cliente",
-            "dar de alta",
-            "alta de cliente",
-            "nuevo cliente",
-            "agregar cliente"
-        ]
-
-        palabras_servicio = [
-            "servicio",
-            "mantenimiento",
-            "preventivo",
-            "correctivo",
-            "inspeccion",
-            "revision",
-            "instalacion",
-            "instalar",
-            "falla",
-            "no funciona",
-            "reparar",
-            "goteo",
-            "fuga"
-        ]
-
-        palabras_inventario = [
-            "stock",
-            "inventario",
-            "disponible",
-            "tienes",
-            "hay existencia",
-            "existencia"
-        ]
-
-        palabras_compra = [
-            "comprar",
-            "compra",
-            "cotizar",
-            "cotizacion",
-            "precio",
-            "necesito",
-            "quiero",
-            "vender",
-            "pedido"
-        ]
-
-        es_registro = any(palabra in texto for palabra in palabras_registro)
-        es_servicio = any(palabra in texto for palabra in palabras_servicio)
-        es_inventario = any(palabra in texto for palabra in palabras_inventario)
-        es_compra = any(palabra in texto for palabra in palabras_compra)
-
-        if es_registro:
+        
+        palabras_registro = ["registrarme", "registrar cliente", "dar de alta", "alta de cliente", "nuevo cliente", "agregar cliente", "no estoy registrado"]
+        if any(palabra in texto for palabra in palabras_registro):
             return "registro_cliente"
-
-        if es_servicio and es_compra:
-            return "mixta"
-
-        if es_servicio:
-            return "servicio"
-
-        if es_inventario:
+            
+        palabras_inventario = ["stock", "inventario", "disponible", "tienes", "hay existencia", "existencia"]
+        if any(palabra in texto for palabra in palabras_inventario) and not servicio:
             return "consulta_inventario"
 
-        if es_compra:
+        # Resolución del BUG: Clasificación basada en lo que realmente contiene el mensaje
+        if productos and servicio:
+            return "mixta"
+        if servicio:
+            return "servicio"
+        if productos:
             return "compra_cotizacion"
-
+            
         return "general"
-
-    # --------------------------------------------------------
-    # DETECCIÓN DE PRODUCTOS Y CANTIDADES
-    # --------------------------------------------------------
 
     def _detectar_productos(self, mensaje: str) -> List[Dict[str, Any]]:
         productos_base = db.buscar_productos_en_texto(mensaje)
         productos_detectados = []
 
         for producto in productos_base:
-            cantidad = self._detectar_cantidad_cerca_de_alias(
-                mensaje=mensaje,
-                alias=producto["alias"]
-            )
-
+            cantidad = self._detectar_cantidad_cerca_de_alias(mensaje=mensaje, alias=producto["alias"])
             productos_detectados.append({
                 "id_producto": producto["id_producto"],
                 "nombre": producto["nombre"],
@@ -175,192 +107,86 @@ class AgenteAtencionCliente:
                 "precio_variable": bool(producto["precio_variable"]),
                 "requiere_diseno_tecnico": bool(producto["requiere_diseno_tecnico"])
             })
-
         return productos_detectados
 
     def _detectar_cantidad_cerca_de_alias(self, mensaje: str, alias: str) -> int:
-        """
-        Detecta cantidades simples como:
-            "3 sensores de flujo"
-            "necesito 2 bombas jockey"
-            "quiero 1 tablero de control"
-
-        Si no detecta cantidad, regresa 1.
-        """
         texto = db.texto_normalizado(mensaje)
         alias_norm = db.texto_normalizado(alias)
-
         posicion = texto.find(alias_norm)
-
-        if posicion == -1:
-            return 1
+        if posicion == -1: return 1
 
         texto_previo = texto[max(0, posicion - 40):posicion]
-
-        patrones = [
-            r"(\d+)\s*(piezas|pieza|pz|unidades|unidad|u)?\s*(de\s+)?$",
-            r"(\d+)\s*$"
-        ]
-
-        for patron in patrones:
+        for patron in [r"(\d+)\s*(piezas|pieza|pz|unidades|unidad|u)?\s*(de\s+)?$", r"(\d+)\s*$"]:
             coincidencia = re.search(patron, texto_previo)
+            if coincidencia: return max(1, int(coincidencia.group(1)))
 
-            if coincidencia:
-                try:
-                    return max(1, int(coincidencia.group(1)))
-                except ValueError:
-                    return 1
-
+        texto_posterior = texto[posicion + len(alias_norm): posicion + len(alias_norm) + 40]
+        for patron in [r"^\s*(?:,|:|—|\bson\b)?\s*(\d+)\s*(piezas|pieza|pz|unidades|unidad|u)?", r"^\s*(\d+)"]:
+            coincidencia = re.search(patron, texto_posterior)
+            if coincidencia: return max(1, int(coincidencia.group(1)))
         return 1
-
-    # --------------------------------------------------------
-    # DETECCIÓN DE UBICACIÓN / SERVICIO FORÁNEO
-    # --------------------------------------------------------
 
     def _detectar_servicio_foraneo(self, mensaje: str) -> bool:
         texto = db.texto_normalizado(mensaje)
+        return any(p in texto for p in ["foraneo", "otro estado", "fuera de jalisco", "viajar", "traslado", "viaticos"])
 
-        palabras_foraneo = [
-            "foraneo",
-            "otro estado",
-            "fuera del estado",
-            "fuera de jalisco",
-            "viajar",
-            "traslado",
-            "viaticos",
-            "viatico"
-        ]
-
-        return any(palabra in texto for palabra in palabras_foraneo)
-
-    # --------------------------------------------------------
-    # DATOS FALTANTES
-    # --------------------------------------------------------
-
-    def _detectar_datos_faltantes(
-        self,
-        intencion: str,
-        cliente: Optional[Dict[str, Any]],
-        productos: List[Dict[str, Any]],
-        servicio: Optional[Dict[str, Any]],
-        mensaje: str
-    ) -> List[str]:
+    def _detectar_datos_faltantes(self, intencion: str, cliente: Optional[Dict[str, Any]], productos: List[Dict[str, Any]], servicio: Optional[Dict[str, Any]], mensaje: str) -> List[str]:
         faltantes = []
         texto = db.texto_normalizado(mensaje)
 
-        if intencion in ["compra_cotizacion", "servicio", "mixta", "consulta_inventario"]:
+        # Si el usuario explícitamente se quiere registrar, omitimos la validación de cliente existente
+        if intencion != "registro_cliente" and intencion in ["compra_cotizacion", "servicio", "mixta", "consulta_inventario"]:
             if cliente is None:
-                faltantes.append("cliente")
+                faltantes.append("identificación_cliente")
 
-        if intencion in ["compra_cotizacion", "mixta", "consulta_inventario"]:
-            if not productos:
-                faltantes.append("producto")
+        if intencion in ["compra_cotizacion", "mixta"] and not productos:
+            faltantes.append("producto_especifico")
 
         if intencion in ["servicio", "mixta"]:
             if servicio is None:
-                faltantes.append("tipo_servicio")
-
+                faltantes.append("tipo_de_servicio")
             if servicio and servicio.get("tipo_servicio") == "Correctivo":
-                palabras_falla = [
-                    "falla",
-                    "no funciona",
-                    "no prende",
-                    "no arranca",
-                    "goteo",
-                    "fuga",
-                    "problema",
-                    "presion",
-                    "ruido"
-                ]
-
-                if not any(palabra in texto for palabra in palabras_falla):
-                    faltantes.append("descripcion_falla")
-
+                if not any(p in texto for p in ["falla", "no funciona", "fuga", "goteo", "problema", "daño"]):
+                    faltantes.append("descripción_de_la_falla")
             if servicio and servicio.get("tipo_servicio") == "Instalacion":
-                palabras_sitio = [
-                    "plano",
-                    "planos",
-                    "metros",
-                    "area",
-                    "sitio",
-                    "ubicacion",
-                    "tuberia",
-                    "bodega",
-                    "almacen"
-                ]
-
-                if not any(palabra in texto for palabra in palabras_sitio):
-                    faltantes.append("informacion_del_sitio")
+                if not any(p in texto for p in ["plano", "sitio", "ubicacion", "bodega", "area"]):
+                    faltantes.append("información_del_sitio_o_planos")
 
         if intencion == "registro_cliente":
-            datos_registro = {
-                "nombre_cliente": ["nombre", "empresa", "cliente"],
-                "tipo_cliente": ["comercial", "empresarial", "institucional"],
-                "rfc": ["rfc"],
-                "direccion": ["direccion", "ubicacion", "domicilio"],
-                "equipo_instalado": ["bomba", "tablero", "equipo", "sistema"]
-            }
-
-            for dato, palabras in datos_registro.items():
-                if not any(palabra in texto for palabra in palabras):
-                    faltantes.append(dato)
+            if not any(p in texto for p in ["nombre", "empresa", "soy"]): faltantes.append("nombre_comercial")
+            if not any(p in texto for p in ["comercial", "empresarial", "institucional", "taller", "hotel"]): faltantes.append("tipo_giro")
+            if "rfc" not in texto: faltantes.append("rfc")
+            if not any(p in texto for p in ["calle", "av", "direccion", "ubicado"]): faltantes.append("dirección_fiscal")
 
         return faltantes
 
-    # --------------------------------------------------------
-    # RESPUESTA SUGERIDA
-    # --------------------------------------------------------
+    def _generar_respuesta_chatbot(self, intencion: str, cliente: Optional[Dict[str, Any]], productos: list, servicio: Optional[Dict[str, Any]], datos_faltantes: List[str]) -> str:
+        # Mapeo amigable para el usuario final
+        nombres_amigables = {
+            "identificación_cliente": "el nombre de tu empresa o ID de cliente registrado",
+            "producto_especifico": "los equipos o refacciones que necesitas",
+            "tipo_de_servicio": "el tipo de servicio técnico (Preventivo, Correctivo o Instalación)",
+            "descripción_de_la_falla": "un breve detalle de la falla o anomalía que presenta el sistema",
+            "información_del_sitio_o_planos": "las dimensiones del lugar o si cuentas con planos hidráulicos",
+            "nombre_comercial": "el nombre oficial de tu negocio o empresa",
+            "tipo_giro": "si tu empresa es de giro Comercial, Empresarial o Institucional",
+            "rfc": "tu RFC de facturación",
+            "dirección_fiscal": "tu domicilio completo"
+        }
 
-    def _generar_respuesta_sugerida(
-        self,
-        intencion: str,
-        cliente: Optional[Dict[str, Any]],
-        productos: List[Dict[str, Any]],
-        servicio: Optional[Dict[str, Any]],
-        datos_faltantes: List[str]
-    ) -> str:
         if datos_faltantes:
-            return (
-                "Detecté la solicitud, pero faltan algunos datos para continuar: "
-                + ", ".join(datos_faltantes)
-                + "."
-            )
+            faltas_str = " y ".join([nombres_amigables.get(d, d) for d in datos_faltantes])
+            return f"¡Hola! Con gusto te apoyo con tu solicitud. Para poder procesarla adecuadamente en nuestro sistema experto, me faltaría que me proporciones: {faltas_str}. ¿Me podrías confirmar ese dato?"
 
         if intencion == "registro_cliente":
-            return "Detecté una intención de registro de nuevo cliente. Se puede enviar al flujo de alta."
+            return "¡Excelente! He recolectado todos tus datos fiscales de forma correcta. Ya puedo proceder a darte de alta en nuestra base de datos. Confirma con el operador para guardar tu registro."
 
+        nombre_cliente = cliente["nombre"] if cliente else "estimado cliente"
         if intencion == "servicio":
-            return "Detecté una solicitud de servicio. La información puede enviarse al motor de inferencia."
-
+            return f"Perfecto, {nombre_cliente}. He tomado nota de tu solicitud para el servicio de {servicio['nombre']}. La orden fue enviada al motor técnico para su preaprobación."
         if intencion == "compra_cotizacion":
-            return "Detecté una solicitud de compra o cotización. La información puede enviarse al motor de inferencia."
-
+            return f"Entendido, {nombre_cliente}. Registré la cotización de los materiales solicitados. Procederemos a verificar disponibilidad en almacén inmediatamente."
         if intencion == "mixta":
-            return "Detecté una solicitud con productos y servicio. Conviene validar ambos elementos con el motor de inferencia."
-
-        if intencion == "consulta_inventario":
-            return "Detecté una consulta de inventario. Se puede validar disponibilidad en la base de datos."
-
-        return "Detecté un mensaje general. Puede requerir más información para clasificarlo correctamente."
-
-
-# ============================================================
-# PRUEBA RÁPIDA
-# Ejecuta:
-#   python src/agente_cliente.py
-# ============================================================
-
-if __name__ == "__main__":
-    agente = AgenteAtencionCliente()
-
-    ejemplos = [
-        "Hola, soy Hotel Guadalajara y necesito 2 sensores de flujo.",
-        "Soy Taller Mecánico Ramírez, necesito mantenimiento correctivo porque la bomba tiene fuga.",
-        "Quiero instalar un sistema contra incendio en otro estado.",
-        "Soy nuevo cliente y quiero registrarme."
-    ]
-
-    for ejemplo in ejemplos:
-        print("\nMENSAJE:", ejemplo)
-        resultado = agente.analizar_mensaje(ejemplo)
-        print(resultado)
+            return f"Recibido, {nombre_cliente}. Procesaremos tanto la adquisición de los equipos como la programación del servicio técnico de instalación."
+        
+        return "He recibido tu mensaje. Estoy analizando las especificaciones técnicas con el supervisor."
